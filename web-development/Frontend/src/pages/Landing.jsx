@@ -121,7 +121,7 @@ const Landing = () => {
       <section className="nova-hero">
         <div className="nova-hero-content">
           <h1>
-            NOVA - Sahabat Tumbuh Kembang Anak
+            NOVA - Nutrition Optimization for Vitality & Advancement
           </h1>
 
           <p>
