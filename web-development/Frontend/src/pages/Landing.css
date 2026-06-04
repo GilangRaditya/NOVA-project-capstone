@@ -151,7 +151,6 @@ button {
   overflow: hidden;
 }
 
-/* Background animated circles */
 .nova-hero::before,
 .nova-hero::after {
   content: "";
@@ -200,7 +199,6 @@ button {
   max-width: 620px;
 }
 
-/* Staggered fade-up animation */
 .nova-hero-content > * {
   opacity: 0;
   animation: fadeUpHero 0.6s ease-out forwards;
@@ -426,6 +424,7 @@ button {
   width: 100%;
   background: #f8fafc;
   padding: 60px 104px 80px;
+  overflow-x: hidden;
 }
 
 .nova-features-header {
@@ -448,9 +447,10 @@ button {
 
 .nova-features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 30px;
   max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -467,6 +467,8 @@ button {
   position: relative;
   overflow: hidden;
   border: 1px solid #e2e8f0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .nova-feature-card:hover {
@@ -507,6 +509,7 @@ button {
   font-size: 18px;
   font-weight: 800;
   color: #1e293b;
+  overflow-wrap: break-word;
 }
 
 .nova-feature-card p {
@@ -723,6 +726,11 @@ button {
     padding-right: 56px;
   }
 
+  .nova-features-grid-section {
+    padding-left: 56px;
+    padding-right: 56px;
+  }
+
   .nova-feature-layout {
     max-width: 100%;
     grid-template-columns: 320px 1fr;
@@ -879,6 +887,29 @@ button {
 
   .nova-benefit-item p {
     font-size: 10px;
+  }
+
+  .nova-features-grid-section {
+    padding: 42px 20px 64px;
+    overflow-x: hidden;
+  }
+
+  .nova-features-header {
+    margin-bottom: 36px;
+  }
+
+  .nova-features-grid {
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin: 0 auto;
+  }
+
+  .nova-feature-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 28px 22px;
   }
 
   .nova-ai-shortcut-section {
@@ -1047,6 +1078,62 @@ button {
 
   .nova-benefit-item p {
     font-size: 9px;
+  }
+
+  .nova-features-grid-section {
+    padding: 36px 18px 56px;
+  }
+
+  .nova-features-header {
+    margin-bottom: 32px;
+  }
+
+  .nova-features-header h2 {
+    font-size: 26px;
+  }
+
+  .nova-features-header p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .nova-features-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .nova-feature-card {
+    padding: 26px 20px;
+    border-radius: 16px;
+  }
+
+  .nova-feature-card h3 {
+    font-size: 20px;
+    line-height: 1.35;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .nova-feature-card p {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .nova-feature-icon-wrapper {
+    width: 72px;
+    height: 72px;
+  }
+
+  .nova-feature-icon-wrapper img {
+    width: 46px;
+    height: 46px;
+  }
+
+  .nova-coming-soon-btn,
+  .nova-use-now-btn {
+    width: 100%;
+    padding: 13px 16px;
+    font-size: 15px;
   }
 
   .nova-ai-shortcut-section {
