@@ -1,75 +1,82 @@
 # NOVA Project Context
 
-## Project Overview
-NOVA is an AI-powered child growth monitoring web application focused on early stunting risk detection and nutritional monitoring for children in Indonesia.
+> Single source for scope, constraints, and priorities. See also [SYSTEM_ARCHITECTURE.md](./SYSTEM_ARCHITECTURE.md), [API_CONTRACT.md](./API_CONTRACT.md), [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md).
 
-## Current Goal
-Deliver a working MVP for capstone/demo within less than 2 weeks remaining.
+## Overview
 
-## MVP Scope
-- User authentication
-- Child profile management
-- Height/weight input
-- Stunting risk prediction
-- Basic dashboard and history
+**NOVA** is an AI-powered child growth monitoring **web app** for early stunting risk detection and nutritional tracking, aimed at parents in Indonesia.
 
-## Tech Stack
-Frontend:
-- React + Vite
+## Goal (remaining capstone time: less than 2 weeks)
 
-Backend:
-- Node.js
-- Express.js
+Ship a **stable demo MVP**: register/login → manage children → enter height/weight → run risk assessment → view history on a simple dashboard.
 
-Database:
-- PostgreSQL
+## MVP scope (in)
 
-AI Service:
-- FastAPI
-- TensorFlow .h5 model
+| Feature | Notes |
+|---------|--------|
+| User auth | Register, login, JWT (backend exists) |
+| Child profiles | Name, DOB, gender |
+| Measurements | Manual height (cm), weight (kg), date |
+| Risk prediction | Express calls FastAPI → TensorFlow `.h5` |
+| Dashboard | List children, latest risk, measurement history |
 
-Deployment:
-- Vercel (frontend)
-- Render/Railway (backend + AI)
-- Neon/Supabase PostgreSQL
+## Out of scope (MVP)
 
-## Architecture
-Frontend → Express Backend → FastAPI AI Service → TensorFlow Model
+- Computer vision / MediaPipe height measurement
+- Mobile native app
+- Immunization reminders, education CMS
+- Advanced analytics or recommendation engine
+- Monorepo restructure (`apps/`, workspaces) — keep current folders
 
-The frontend must NEVER call the AI service directly.
+## Tech stack
 
-## Important Constraints
-- Remaining development time is less than 2 weeks
-- Prioritize MVP and demo stability over advanced features
-- Avoid overengineering and unnecessary refactors
-- Focus on integration and working user flow
+| Layer | Path | Stack |
+|-------|------|--------|
+| Frontend | `NOVA/web-development/Frontend` | React 19, Vite |
+| Backend | `NOVA/web-development/Backend` | Express 5, `pg`, JWT |
+| Database | Hosted or local | PostgreSQL |
+| ML training | `NOVA/mecine-learning-ai/notebooks` | TensorFlow, scikit-learn |
+| AI service (to add) | `NOVA/mecine-learning-ai/ai-service` | FastAPI, uvicorn |
 
-## Out of Scope (for MVP)
-- Computer Vision body measurement
-- MediaPipe
-- Mobile app
-- Complex analytics
-- Advanced AI recommendations
+**Deployment target:** Vercel (frontend), Render/Railway (API + AI), Neon/Supabase (Postgres).
 
-## Current Development Priorities
-1. Stable architecture
-2. Backend + database integration
-3. FastAPI inference service
-4. Frontend integration
-5. Deployment and demo readiness
+## Architecture rule
 
-## Branding / UI Direction
-Color Palette:
-- Burgundy (#6C0820)
-- Cherry Blossom Pink (#F2AEBC)
-- Misty Rose (#F2DCDB)
-- Soft Cream (#FFFBEB)
-- Silver Lake Blue (#5A86CB)
-- Lapis Lazuli (#3D5D91)
+```
+Frontend → Express API → PostgreSQL
+              ↓
+         FastAPI (inference only)
+```
 
-UI Principles:
-- Calm
-- Professional
-- Parent-friendly
-- Trustworthy
-- Emotionally safe
+The browser **must not** call FastAPI directly.
+
+## Development priorities (less than 2 weeks)
+
+1. **Database** — migrations for `children`, `growth_records`, `risk_assessments`
+2. **Backend** — JWT middleware, child/measurement/assess routes, `GET /api/health`
+3. **AI service** — FastAPI `POST /predict/risk` + model artifacts (`scaler.pkl`, etc.)
+4. **Frontend** — auth UI, Vite `/api` proxy, child form, assess + history
+5. **Demo** — env examples, one happy-path seed user, deploy API + web
+
+## Branding / UI
+
+| Token | Hex |
+|-------|-----|
+| Burgundy | `#6C0820` |
+| Cherry Blossom Pink | `#F2AEBC` |
+| Misty Rose | `#F2DCDB` |
+| Soft Cream | `#FFFBEB` |
+| Silver Lake Blue | `#5A86CB` |
+| Lapis Lazuli | `#3D5D91` |
+
+UI: calm, professional, parent-friendly, trustworthy.
+
+## ML note
+
+Product README mentions CV anthropometry; **MVP uses manual measurements** + tabular model trained on `data_bersih.csv` (`Risk_Category` target). CV notebooks stay R&D only.
+
+## Team conventions
+
+- Work under `NOVA/` only (ignore duplicate root `web-development/` if present).
+- Match existing API response shape: `{ status, message, data }`.
+- Fix `authController` import vs `authcontroller.js` filename before Linux deploy.
