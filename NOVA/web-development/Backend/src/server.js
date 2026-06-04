@@ -1,8 +1,8 @@
-import pool from './config/db.js';
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
+import pool from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import predictRoutes from './routes/predictRoutes.js';
 import errorMiddleware from './middlewares/errorMiddleware.js';
@@ -10,10 +10,12 @@ import errorMiddleware from './middlewares/errorMiddleware.js';
 dotenv.config();
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
+// Test koneksi database saat server start
 pool.query('SELECT NOW()')
   .then((result) => {
     console.log('Database connected:', result.rows[0]);
@@ -22,12 +24,17 @@ pool.query('SELECT NOW()')
     console.error('Database connection error:', error.message);
   });
 
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 3000;
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api', predictRoutes);
+
+// Health check route untuk test deploy
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'NOVA API is running',
+  });
+});
 
 // 404 handler
 app.use((req, res) => {
@@ -40,6 +47,6 @@ app.use((req, res) => {
 // Global error handler
 app.use(errorMiddleware);
 
-app.listen(port, host, () => {
-  console.log(`NOVA API berjalan di http://${host}:${port}`);
+app.listen(port, () => {
+  console.log(`NOVA API berjalan di port ${port}`);
 });
